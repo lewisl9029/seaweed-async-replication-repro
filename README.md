@@ -48,6 +48,6 @@ Issue 1: Note that the response from primary will have a `Seaweed-Meta` header w
 
 ## Check file at `/resources/test1` in `storage-backup-development` bucket 
 
-Issue 2: Note that `/resources/test` doesn't have any tags with the data included in the `Seaweed-Meta` header.
+Issue 2: Note that `/resources/test1` doesn't have any tags with the data included in the `Seaweed-Meta` header.
 
 ![image](https://user-images.githubusercontent.com/6934200/187047596-bdfbc790-91e5-45d4-9cb0-d91d737451cb.png)
