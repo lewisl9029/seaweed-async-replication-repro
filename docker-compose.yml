@@ -1,0 +1,53 @@
+version: '3.9'
+services:
+  storage-primary:
+    build: ./
+    container_name: storage-primary
+    ports:
+      - '58088:8888'
+    env_file: .env
+    environment:
+      - WEED_REDIS2_ADDRESS=storage-primary-redis:6379
+      - WEED_SINK_S3_BUCKET=storage-backup-development
+      - STORAGE_PRIMARY_HOSTNAME=storage-primary
+      - FLY_REGION=sjc
+    volumes:
+      - storage-primary-data:/data
+  storage:
+    build: ./
+    container_name: storage
+    ports:
+      - '58093:8888'
+    env_file: .env
+    environment:
+      - WEED_REDIS2_ADDRESS=storage-redis:6379
+      - WEED_SINK_S3_BUCKET=storage-backup-development
+      - STORAGE_PRIMARY_HOSTNAME=storage-primary
+      - FLY_REGION=ewr
+    volumes:
+      - storage-data:/data
+  storage-redis-primary:
+    image: flyio/redis:6.2.6
+    container_name: storage-primary-redis
+    env_file: .env
+    environment:
+      - FLY_VM_MEMORY_MB=256
+      - MAXMEMORY_POLICY=noeviction
+      - APPENDONLY=yes
+    volumes:
+      - storage-primary-redis-data:/data
+  storage-redis:
+    image: flyio/redis:6.2.6
+    container_name: storage-redis
+    env_file: .env
+    environment:
+      - FLY_VM_MEMORY_MB=256
+      - MAXMEMORY_POLICY=noeviction
+      - APPENDONLY=yes
+    volumes:
+      - storage-redis-data:/data
+volumes:
+  storage-primary-redis-data:
+  storage-redis-data:
+  storage-primary-data:
+  storage-data:
